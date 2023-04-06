@@ -35,7 +35,3 @@
 .Item:not(:last-child) {
     margin-bottom: 10px;
 }
-
-.Name {
-  overflow: scroll;
-}
