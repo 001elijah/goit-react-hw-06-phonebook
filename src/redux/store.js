@@ -16,8 +16,13 @@ const contactsReducer = createReducer(JSON.parse(localStorage.getItem('contacts'
         localStorage.setItem('contacts', JSON.stringify([...state, action.payload]));
         return [...state, action.payload];
     },
-    [rmContact]: (state, action) => state.filter(contact => contact.id !== action.payload)
+    [rmContact]: (state, action) => {
+        console.log(action.payload.id);
+        localStorage.setItem('contacts', JSON.stringify([...state.filter(contact => contact.id !== action.payload.id)]));
+        return state.filter(contact => contact.id !== action.payload.id);
+    }
 });
+
 const filterReducer = createReducer("", {
     [applyFilter]: (state, action) => action.payload
 });

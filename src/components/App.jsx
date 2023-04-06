@@ -5,9 +5,9 @@ import ContactList from "./ContactList/ContactList";
 import Filter from "./Filter/Filter";
 
 const App = () => {
-  const contactsRedux = useSelector(state => state.contacts); // redux contacts
-
   const dispatch = useDispatch(); // redux filter
+  
+  const contactsRedux = useSelector(state => state.contacts); // redux contacts
   const filterQueryRedux = useSelector(state => state.filter); // redux filter
 
   const filterContacts = () => {

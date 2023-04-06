@@ -27,11 +27,15 @@
 
 .Item {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     gap: 5px;
 }
 
 .Item:not(:last-child) {
     margin-bottom: 10px;
+}
+
+.Name {
+  overflow: scroll;
 }

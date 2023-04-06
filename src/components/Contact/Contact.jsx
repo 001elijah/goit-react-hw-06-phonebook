@@ -6,8 +6,8 @@ import s from './Contact.module.css';
 const Contact = ({ contactProp, removeContact }) => {
     return (
         <li className={s.Item}>
-            <span>{contactProp.name}: </span><span>{contactProp.number} </span>
-            <button className={s.Button} type="button" onClick={() => removeContact(rmContact(contactProp.id))}>Delete</button>
+            <span className={s.Name}>{contactProp.name}: </span><span>{contactProp.number} </span>
+            <button className={s.Button} type="button" onClick={() => removeContact(rmContact(contactProp))}>Delete</button>
         </li>
     );
 };
