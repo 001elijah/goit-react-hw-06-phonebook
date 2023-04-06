@@ -1,5 +1,6 @@
 import shortid from "shortid";
 import { useState } from "react";
+import { addContact } from "redux/store";
 
 import s from './ContactForm.module.css'
 
@@ -20,7 +21,7 @@ const ContactForm = ({ onSubmitProp }) => {
 
     const handleSubmit = evt => {
         evt.preventDefault();
-        onSubmitProp({name, number, id: shortid.generate()});
+        onSubmitProp(addContact({name, number, id: shortid.generate()}));
         reset();
     };
 
