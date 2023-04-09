@@ -1,35 +1,72 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { createAction, createReducer } from '@reduxjs/toolkit';
+import {
+    persistStore,
+    persistReducer,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+} from 'redux-persist';
 
-export const applyFilter = createAction('filter/apply');
+import storage from 'redux-persist/lib/storage';
 
-export const addContact = createAction('contacts/add');
-export const rmContact = createAction('contacts/remove');
+import contactsReducer from './contactsSlice';
 
-const contactsReducer = createReducer(JSON.parse(localStorage.getItem('contacts')) ?? [], {
-    [addContact]: (state, action) => {
-        const found = state.find(contact => contact.name.toLowerCase() === action.payload.name.toLowerCase());
-        if (found) {
-        alert(`${action.payload.name} is already in contacts.`);
-        return;
-        };
-        localStorage.setItem('contacts', JSON.stringify([...state, action.payload]));
-        return [...state, action.payload];
-    },
-    [rmContact]: (state, action) => {
-        console.log(action.payload.id);
-        localStorage.setItem('contacts', JSON.stringify([...state.filter(contact => contact.id !== action.payload.id)]));
-        return state.filter(contact => contact.id !== action.payload.id);
-    }
-});
+// export const applyFilter = createAction('filter/apply');
 
-const filterReducer = createReducer("", {
-    [applyFilter]: (state, action) => action.payload
-});
+// export const addContact = createAction('contacts/add');
+// export const rmContact = createAction('contacts/remove');
+
+// const contactsReducer = createReducer([], {
+//     [addContact]: (state, action) => {
+//         localStorage.setItem('contacts', JSON.stringify([...state, action.payload])); //це недобре, треба вирішити (через persist)
+//         return [...state, action.payload];
+//     },
+//     [rmContact]: (state, action) => {
+//         localStorage.setItem('contacts', JSON.stringify([...state.filter(contact => contact.id !== action.payload.id)])); //це недобре, треба вирішити
+//         return state.filter(contact => contact.id !== action.payload.id);
+//     }
+// });
+
+// const filterReducer = createReducer("", {
+//     [applyFilter]: (state, { payload }) => payload
+// });
+
+// const filterReducer = createReducer("", (builder) => { // this is up-to-date version
+//     builder.addCase(applyFilter, (state, { payload }) =>
+//         payload
+//     )
+    // .addCase....
+    // .addCase....
+// });
+
+// const preloadedState = {
+//     contacts: JSON.parse(localStorage.getItem('contacts')) ?? [],
+//     filter: ''
+// };
+
+const persistContactsConfig = {
+    key: 'contacts',
+    storage,
+    whitelist: ['contacts']
+};
+
+const persistedContactsReducer = persistReducer(persistContactsConfig, contactsReducer);
 
 export const store = configureStore({
     reducer: {
-        contacts: contactsReducer,
-        filter: filterReducer
-  },
-})
+        contacts: persistedContactsReducer
+    },
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+    // preloadedState,
+    // devTools: process.env.NODE_ENV === "production"// true/false - show/hide redux devtools state
+});
+
+export const persistor = persistStore(store);

@@ -1,6 +1,7 @@
 import shortid from "shortid";
 import { useState } from "react";
-import { addContact } from "redux/store";
+// import { addContact } from "redux/store";
+import { add as addContact } from 'redux/contactsSlice';
 
 import s from './ContactForm.module.css'
 

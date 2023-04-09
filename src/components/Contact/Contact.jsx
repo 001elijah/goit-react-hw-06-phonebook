@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { rmContact } from "redux/store";
+// import { rmContact } from "redux/store";
+import { remove as rmContact } from '../../redux/contactsSlice'
 
 import s from './Contact.module.css';
 

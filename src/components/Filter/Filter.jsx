@@ -1,4 +1,5 @@
-import { applyFilter } from "redux/store";
+// import { applyFilter } from "redux/store";
+import { filter as applyFilter } from "redux/contactsSlice";
 
 import s from './Filter.module.css';
 
